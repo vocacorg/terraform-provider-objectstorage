@@ -101,13 +101,13 @@ func resourceAccountUpdate(d *schema.ResourceData, m interface{}) error {
 }
 
 func resourceAccountRead(d *schema.ResourceData, m interface{}) error {
-	id := d.Id()
-	if id == "" {
-		return fmt.Errorf("ID SHOULD NOT BE BLANK")
+	accountId := d.Get("account_id")
+	if accountId == "" {
+		return fmt.Errorf("ACCOUNT ID SHOULD NOT BE BLANK")
 	}
 
 	client := m.(*Client)
-	resp, err := client.Get(fmt.Sprintf("accounts/%s", id))
+	resp, err := client.Get(fmt.Sprintf("accounts/%s", accountId))
 	if err != nil {
 		return nil
 	}
@@ -125,7 +125,7 @@ func resourceAccountRead(d *schema.ResourceData, m interface{}) error {
 	}
 
 	d.SetId(accountResponse.Id)
-	d.Set("id", accountResponse.Id)
+	d.Set("account_id", accountResponse.Id)
 	d.Set("source", accountResponse.Source)
 	d.Set("group", accountResponse.Group)
 	d.Set("askId", accountResponse.AskId)
