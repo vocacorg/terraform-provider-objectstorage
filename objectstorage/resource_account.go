@@ -33,7 +33,7 @@ func resourceAccount() *schema.Resource {
 		},
 
 		Schema: map[string]*schema.Schema{
-			"id": {
+			"account_id": {
 				Type: schema.TypeString,
 				Optional: true,
 			},
