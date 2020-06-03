@@ -10,15 +10,15 @@ func Provider() terraform.ResourceProvider {
 	return &schema.Provider{
 		Schema: map[string]*schema.Schema{
 			"username": {
-				Required: true,
-				Type: schema.TypeString,
-				DefaultFunc: schema.EnvDefaultFunc("BITBUCKET_USERNAME", nil),
+				Required:    true,
+				Type:        schema.TypeString,
+				DefaultFunc: schema.EnvDefaultFunc("MS_ID", nil),
 			},
 			"password": {
-				Required: true,
-				Sensitive: true,
-				Type: schema.TypeString,
-				DefaultFunc: schema.EnvDefaultFunc("BITBUCKET_PASSWORD", nil),
+				Required:    true,
+				Sensitive:   true,
+				Type:        schema.TypeString,
+				DefaultFunc: schema.EnvDefaultFunc("MS_PASSWORD", nil),
 			},
 		},
 		ConfigureFunc: providerConfigure,
@@ -30,8 +30,8 @@ func Provider() terraform.ResourceProvider {
 
 func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 	client := &Client{
-		Username: d.Get("username").(string),
-		Password: d.Get("password").(string),
+		Username:   d.Get("username").(string),
+		Password:   d.Get("password").(string),
 		HTTPClient: &http.Client{},
 	}
 

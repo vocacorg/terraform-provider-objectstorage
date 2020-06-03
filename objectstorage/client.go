@@ -11,7 +11,7 @@ import (
 )
 
 type Error struct {
-	APIError struct{
+	APIError struct {
 		Message string `json:"message,omitempty"`
 	}
 	StatusCode int
@@ -27,10 +27,10 @@ const (
 )
 
 type Client struct {
-	Username string
-	Password string
+	Username    string
+	Password    string
 	AccessToken string
-	HTTPClient *http.Client
+	HTTPClient  *http.Client
 }
 
 func (c *Client) Do(method, endpoint string, payload *bytes.Buffer) (*http.Response, error) {
@@ -60,7 +60,7 @@ func (c *Client) Do(method, endpoint string, payload *bytes.Buffer) (*http.Respo
 	if resp.StatusCode >= 400 || resp.StatusCode < 200 {
 		apiError := Error{
 			StatusCode: resp.StatusCode,
-			Endpoint: endpoint,
+			Endpoint:   endpoint,
 		}
 
 		body, err := ioutil.ReadAll(resp.Body)
@@ -85,7 +85,8 @@ func (c *Client) AuthenticateIfRequire() error {
 		return nil
 	}
 
-	tokenRequest := c.newTokenRequest();
+	log.Printf("[DEBUG] Access token is missing")
+	tokenRequest := c.newTokenRequest()
 
 	var jsonbuffer []byte
 	jsonpayload := bytes.NewBuffer(jsonbuffer)
@@ -105,6 +106,7 @@ func (c *Client) AuthenticateIfRequire() error {
 			return readerr
 		}
 
+		log.Printf("[DEBUG] Unmarshalling the token response: %v", body)
 		decodeerr := json.Unmarshal(body, &tokenResponse)
 		if decodeerr != nil {
 			return decodeerr
